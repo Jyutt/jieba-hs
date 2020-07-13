@@ -1,13 +1,14 @@
 import System.IO
-import Control.Monad
 import Dictionary
-import Graph 
+import Graph
 
+main :: IO ()
 main = do
     handle <- openFile "dict.txt.small" ReadMode
     contents <- hGetContents handle
     let dict = dictFromContents contents
-    let snt = "我是台湾人"
+    let snt = "退回你的我的回不去的悠悠的岁月"
     let dag = buildDAG snt dict
     let path = optimalPath dag dict
-    (putStrLn . show) path
+    let segmentation = (segmentSentence snt . segmentLengths) path
+    mapM_ putStrLn segmentation

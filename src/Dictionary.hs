@@ -1,7 +1,6 @@
 module Dictionary where
 
 import qualified Data.Map.Strict as Map
-import Data.Maybe (fromMaybe)
 
 type Frequency = Integer -- Integer vs. Int?
 type LogFrequency = Double
@@ -25,11 +24,11 @@ dictFromEntryPairs :: [(Term, Entry)] -> Dict
 dictFromEntryPairs entryPairs = Dict dM totalF totalLF
     where
       dM = Map.fromList entryPairs
-      totalF = sum [ freq | (_, Entry freq _) <- entryPairs]
+      totalF = sum [ f | (_, Entry f _) <- entryPairs]
       totalLF = (log . fromIntegral) totalF
 
 dictFromContents :: String -> Dict
-dictFromContents = dictFromEntryPairs . entryPairsFromContents 
+dictFromContents = dictFromEntryPairs . entryPairsFromContents
 
 termFreq :: Term -> Dict -> Maybe Frequency
 termFreq t dict = freq <$> Map.lookup t (dictMap dict)

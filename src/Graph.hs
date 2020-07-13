@@ -1,7 +1,6 @@
 module Graph where
 
 import Data.Array
-import Data.List (maximumBy)
 import Dictionary
 import Data.Maybe
 
@@ -20,7 +19,7 @@ buildDAG str dict = sntDAG
   where
     adj = map (suffixAdjList dict) (suffixes str)
     adjIndexed = zip [0..] adj
-    sntDAG = array (0, length adjIndexed - 1) adjIndexed 
+    sntDAG = array (0, length adjIndexed - 1) adjIndexed
 
 -- 1. 从句子建無環圖
 -- 2. 採用動態規劃查找最大概率路徑
@@ -29,12 +28,29 @@ optimalPath sntDAG dict = costArray
   where
     (_, n) = bounds sntDAG
     logTF = logTotalFrequency dict
-    normalize (freq, v) = (freq - logTF, v)
-    costArray = array (0, n+1) $ (n+1, (0,0)):[(v, optimalPathFrom v) | v <- [n,n-1..0]]
+    normalize (f, v) = (f - logTF, v)
+    costArray = array (0, n+1) $ (n+1, (0,-1)):[(v, optimalPathFrom v) | v <- [n,n-1..0]]
     optimalPathFrom v =
       (normalize . maximum) [(w + remainder v',v')| (Edge v' w) <- sntDAG ! v]
         where
           remainder v' = fst $ costArray ! (v' + 1)
+
+segmentLengths :: Array Vertex (LogFrequency, Vertex) -> [Vertex]
+segmentLengths path = f 0 []
+  where
+    f v vs
+      | v' == -1  = vs
+      | otherwise   = f (v' + 1) (vs ++ [v' - v + 1])
+      where v' = snd $ path ! v
+
+segmentSentence :: Sentence -> [Vertex] -> [String]
+segmentSentence snt seglens = f snt seglens []
+  where
+    f str lens xs
+      | length lens == 0 = xs
+      | otherwise = f (drop len str) (drop 1 lens) (xs ++ [take len str])
+      where
+        len = head lens
 
 -- |Returns list of suffixes with corresponding indices of the first character
 suffixes :: String -> [(Vertex, String)]
@@ -52,7 +68,7 @@ findEdges :: Dict -> [(Vertex, String)] -> AdjacencyList
 findEdges dict pfxs = catMaybes $ map pf2edge pfxs
   where
     pf2edge (v, pf) =
-      (\freq -> Edge v ((log . fromIntegral) freq)) <$> termFreq pf dict
+      (\f -> Edge v ((log . fromIntegral) f)) <$> termFreq pf dict
 
 suffixAdjList :: Dict -> (Vertex, String) -> AdjacencyList
 suffixAdjList dict = (findEdges dict) . prefixes
