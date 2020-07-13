@@ -29,14 +29,17 @@ optimalPath sntDAG dict = costArray
     (_, n) = bounds sntDAG
     logTF = logTotalFrequency dict
     normalize (f, v) = (f - logTF, v)
-    costArray = array (0, n+1) $ (n+1, (0,-1)):[(v, optimalPathFrom v) | v <- [n,n-1..0]]
+    costArray = array (0, n+1) $
+      (n+1, (0,-1)):[(v, optimalPathFrom v) | v <- [n,n-1..0]]
     optimalPathFrom v =
-      (normalize . maximum) [(w + remainder v',v')| (Edge v' w) <- sntDAG ! v]
+      -- (Edge v 0) is for smoothing purposes in the case that no matches in dictionary
+      -- were found.
+      (normalize . maximum) [(w + remainder v',v') | (Edge v' w) <- (Edge v 0) : sntDAG ! v]
         where
           remainder v' = fst $ costArray ! (v' + 1)
 
-segmentLengths :: Array Vertex (LogFrequency, Vertex) -> [Vertex]
-segmentLengths path = f 0 []
+calculateSegments :: Array Vertex (LogFrequency, Vertex) -> [Vertex]
+calculateSegments path = f 0 []
   where
     f v vs
       | v' == -1  = vs
