@@ -1,16 +1,12 @@
 import System.IO
 import Dictionary
-import Graph
+import Jieba
+import Data.List (intercalate)
 
 main :: IO ()
 main = do
-    handle <- openFile "dict.txt.small" ReadMode
-    contents <- hGetContents handle
+    contents <- hGetContents =<< openFile "dict.txt.small" ReadMode
     let dict = dictFromContents contents
-    putStrLn "Enter sentence: "
-    snt <- getLine
-    -- let snt = "退回你的我的回不去的悠悠的岁月"
-    let dag = buildDAG snt dict
-    let path = optimalPath dag dict
-    let segmentation = (segmentSentence snt . calculateSegments) path
-    mapM_ putStrLn segmentation
+    let snt = "就算失望不能绝望"
+    let result = cut NoHMM dict snt
+    putStrLn $ intercalate "/" result
