@@ -32,3 +32,6 @@ dictFromContents = dictFromEntryPairs . entryPairsFromContents
 
 termFreq :: Term -> Dict -> Maybe Frequency
 termFreq t dict = freq <$> Map.lookup t (dictMap dict)
+
+-- TF-IDF dictionary
+data IdfDict = IdfDict { idfDict :: Map.Map Term Frequency }
