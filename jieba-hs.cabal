@@ -27,7 +27,7 @@ executable jieba-hs
       Dictionary, Graph, Jieba
   -- other-extensions:
   build-depends:
-      base >=4.12 && <4.13
+    base >=4.12
     , containers >=0.6.0.1
     , array >=0.5.3.0
   hs-source-dirs:      src
