@@ -24,7 +24,11 @@ extra-source-files:  CHANGELOG.md, README.md
 executable jieba-hs
   main-is:             Main.hs
   other-modules:
-      Dictionary, Graph, Jieba
+      Jieba
+      Jieba.Dictionary
+      Jieba.Dictionary.Types.PosTag
+      Jieba.Dictionary.FreqDict
+      Jieba.Graph
   -- other-extensions:
   build-depends:
     base >=4.12

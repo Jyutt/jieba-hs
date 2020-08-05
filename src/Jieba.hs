@@ -1,26 +1,29 @@
 module Jieba where
 
-import Dictionary
-import Graph
+import Jieba.Dictionary
+import Jieba.Graph
+import Jieba.Dictionary.Types.PosTag
+import Jieba.Dictionary.FreqDict
+
 import Control.Monad (liftM2)
 import Data.Array
 import Data.Maybe (fromMaybe)
 
 data CutMode = All | HMM | NoHMM
 
-cut :: CutMode -> Dict -> String -> [String]
+cut :: CutMode -> FreqDict -> String -> [String]
 cut mode = case mode of
   All -> cutAll
   HMM -> undefined
   NoHMM -> cutNoHMM
 
-cutNoHMM :: Dict -> String -> [String]
+cutNoHMM :: FreqDict -> String -> [String]
 cutNoHMM dict snt = seg . followPath . path $ (dict, snt)
   where
     path = uncurry $ liftM2 (.) optimalPath buildDAG
     seg = segmentSentence snt
 
-cutAll :: Dict -> String -> [String]
+cutAll :: FreqDict -> String -> [String]
 cutAll dict snt = concatMap f idxs
   where
     dag = buildDAG dict snt
@@ -29,5 +32,5 @@ cutAll dict snt = concatMap f idxs
     substr x y = take (y - x + 1) . drop x $ snt
     f ix = map (substr ix . vertex) (dag ! ix)
 
-tokenize :: Dict -> [String] -> [(String, PosTag)]
-tokenize dict xs = zip xs $ map (fromMaybe Untagged . termPOS dict) xs
+tokenize :: FreqDict -> [String] -> [(String, PosTag)]
+tokenize dict xs = zip xs $ map (fromMaybe Untagged . lookupPOS dict) xs

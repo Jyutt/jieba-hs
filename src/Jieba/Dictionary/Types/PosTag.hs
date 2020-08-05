@@ -1,10 +1,4 @@
-module Dictionary where
-
-import qualified Data.Map.Strict as Map
-
-type Frequency = Integer -- Integer vs. Int?
-type LogFrequency = Double
-type Term = String
+module Jieba.Dictionary.Types.PosTag where
 
 -- POS Tags as defined by ICTCLAS
 data PosTag
@@ -49,15 +43,6 @@ instance Show PosTag where
     TIME -> "TIME 時間"
     Untagged -> "無標籤"
 
-data Entry = Entry { freq :: Frequency, pos :: PosTag } deriving (Show)
-type DictEntryPair = (Term, Entry)
-data Dict = Dict
-    { dictMap :: Map.Map Term Entry
-    , totalFrequency :: Frequency
-    , logTotalFrequency :: LogFrequency
---    , longestTermLength :: Int
-    } deriving (Show)
-
 -- TODO: Error detection in parsers? Refactor into a parser module?
 parsePOS :: String -> PosTag
 parsePOS posTag = case posTag of
@@ -90,33 +75,3 @@ parsePOS posTag = case posTag of
   "ORG" -> ORG
   "TIME" -> TIME
   _ -> Untagged
-
-entryPairsFromContents :: String -> [DictEntryPair]
-entryPairsFromContents input = map f $ lines input
-    where
-      f = words2entry . words
-      words2entry xs = (term, Entry frequency posTag)
-        where
-          term = head xs
-          frequency = read (xs !! 1) :: Frequency
-          posTag = parsePOS (xs !! 2)
-
-dictFromEntryPairs :: [DictEntryPair] -> Dict
-dictFromEntryPairs entryPairs = Dict dM totalF totalLF
-    where
-      dM = Map.fromList entryPairs
-      totalF = sum [ f | (_, Entry f _) <- entryPairs]
-      totalLF = (log . fromIntegral) totalF
-
-dictFromContents :: String -> Dict
-dictFromContents = dictFromEntryPairs . entryPairsFromContents
-
-termFreq :: Dict -> Term -> Maybe Frequency
-termFreq dict t = freq <$> Map.lookup t (dictMap dict)
-
-termPOS :: Dict -> Term -> Maybe PosTag
-termPOS dict t = pos <$> Map.lookup t (dictMap dict)
-
--- TF-IDF dictionary
--- TODO: Move to generic Dict type, with backing Trie
--- data IdfDict = IdfDict { idfDict :: Map.Map Term Frequency }

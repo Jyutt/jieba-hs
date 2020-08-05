@@ -1,5 +1,5 @@
 import System.IO
-import Dictionary
+import Jieba.Dictionary.FreqDict
 import Jieba
 import Data.List (intercalate)
 
