@@ -63,10 +63,10 @@ entryPairsFromContents :: String -> [DictEntryPair]
 entryPairsFromContents input = map f $ lines input
     where
       f = words2entry . words
-      words2entry xs = (term, Entry freq posTag)
+      words2entry xs = (term, Entry frequency posTag)
         where
           term = xs !! 0
-          freq = read (xs !! 1) :: Frequency
+          frequency = read (xs !! 1) :: Frequency
           posTag = parsePOS (xs !! 2)
 
 dictFromEntryPairs :: [DictEntryPair] -> Dict
@@ -79,8 +79,11 @@ dictFromEntryPairs entryPairs = Dict dM totalF totalLF
 dictFromContents :: String -> Dict
 dictFromContents = dictFromEntryPairs . entryPairsFromContents
 
-termFreq :: Term -> Dict -> Maybe Frequency
-termFreq t dict = freq <$> Map.lookup t (dictMap dict)
+termFreq :: Dict -> Term -> Maybe Frequency
+termFreq dict t = freq <$> Map.lookup t (dictMap dict)
+
+termPOS :: Dict -> Term -> Maybe POSTag
+termPOS dict t = pos <$> Map.lookup t (dictMap dict)
 
 -- TF-IDF dictionary
 data IdfDict = IdfDict { idfDict :: Map.Map Term Frequency }

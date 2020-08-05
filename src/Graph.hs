@@ -69,7 +69,7 @@ findEdges :: Dict -> [(Vertex, String)] -> AdjacencyList
 findEdges dict pfxs = catMaybes $ map pf2edge pfxs
   where
     pf2edge (v, pf) =
-      (\f -> Edge v ((log . fromIntegral) f)) <$> termFreq pf dict
+      (\f -> Edge v ((log . fromIntegral) f)) <$> termFreq dict pf
 
 suffixAdjList :: Dict -> (Vertex, String) -> AdjacencyList
 suffixAdjList dict = (findEdges dict) . prefixes
