@@ -7,7 +7,7 @@ type LogFrequency = Double
 type Term = String
 
 -- POS Tags as defined by ICTCLAS
-data POSTag
+data PosTag
   = N | F | S | T
   | NR | NS | NT | NW
   | NZ | V | VD | VN
@@ -17,7 +17,7 @@ data POSTag
   | PER | LOC | ORG | TIME
   | Untagged
 
-instance Show POSTag where
+instance Show PosTag where
   show posTag = case posTag of
     N -> "n 普通名詞"
     F -> "f 方位名詞"
@@ -49,7 +49,7 @@ instance Show POSTag where
     TIME -> "TIME 時間"
     Untagged -> "無標籤"
 
-data Entry = Entry { freq :: Frequency, pos :: POSTag } deriving (Show)
+data Entry = Entry { freq :: Frequency, pos :: PosTag } deriving (Show)
 type DictEntryPair = (Term, Entry)
 data Dict = Dict
     { dictMap :: Map.Map Term Entry
@@ -59,7 +59,7 @@ data Dict = Dict
     } deriving (Show)
 
 -- TODO: Error detection in parsers? Refactor into a parser module?
-parsePOS :: String -> POSTag
+parsePOS :: String -> PosTag
 parsePOS posTag = case posTag of
   "n" -> N
   "f" -> F
@@ -97,7 +97,7 @@ entryPairsFromContents input = map f $ lines input
       f = words2entry . words
       words2entry xs = (term, Entry frequency posTag)
         where
-          term = xs !! 0
+          term = head xs
           frequency = read (xs !! 1) :: Frequency
           posTag = parsePOS (xs !! 2)
 
@@ -114,8 +114,9 @@ dictFromContents = dictFromEntryPairs . entryPairsFromContents
 termFreq :: Dict -> Term -> Maybe Frequency
 termFreq dict t = freq <$> Map.lookup t (dictMap dict)
 
-termPOS :: Dict -> Term -> Maybe POSTag
+termPOS :: Dict -> Term -> Maybe PosTag
 termPOS dict t = pos <$> Map.lookup t (dictMap dict)
 
 -- TF-IDF dictionary
-data IdfDict = IdfDict { idfDict :: Map.Map Term Frequency }
+-- TODO: Move to generic Dict type, with backing Trie
+-- data IdfDict = IdfDict { idfDict :: Map.Map Term Frequency }

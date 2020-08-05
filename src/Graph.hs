@@ -32,7 +32,7 @@ optimalPath dict sntDAG = costArray
     normalize (f, v) = (f - logTotalFrequency dict, v)
     costArray = array (0, n+1) $ (n+1, (0,-1)):[(v, optimalPathFrom v) | v <- [n,n-1..0]]
     optimalPathFrom v =
-      (normalize . maximum) [(w + remainder v',v') | (Edge v' w) <- (Edge v 0) : sntDAG ! v]
+      (normalize . maximum) [(w + remainder v',v') | (Edge v' w) <- Edge v 0 : sntDAG ! v]
         where
           remainder v' = fst $ costArray ! (v' + 1)
 
@@ -48,7 +48,7 @@ segmentSentence :: Sentence -> [Vertex] -> [String]
 segmentSentence snt seglens = f snt seglens []
   where
     f str lens xs
-      | length lens == 0 = xs
+      | null lens = xs
       | otherwise = f (drop len str) (drop 1 lens) (xs ++ [take len str])
       where
         len = head lens
@@ -66,10 +66,9 @@ prefixes (idx, str) = [(idx + n - 1, take n str) | n <- [1..length str]]
 -- The node from which edges are directed out of are implicit
 -- based on the input prefixes list. See 'prefixes'.
 findEdges :: Dict -> [(Vertex, String)] -> AdjacencyList
-findEdges dict pfxs = catMaybes $ map pf2edge pfxs
+findEdges dict = mapMaybe pf2edge
   where
-    pf2edge (v, pf) =
-      (\f -> Edge v ((log . fromIntegral) f)) <$> termFreq dict pf
+    pf2edge (v, pf) = Edge v . (log . fromIntegral) <$> termFreq dict pf
 
 suffixAdjList :: Dict -> (Vertex, String) -> AdjacencyList
-suffixAdjList dict = (findEdges dict) . prefixes
+suffixAdjList dict = findEdges dict . prefixes
