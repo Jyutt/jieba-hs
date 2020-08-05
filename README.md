@@ -1,4 +1,5 @@
 # jieba-hs
+![Haskell CI](https://github.com/zyklotomic/jieba-hs/workflows/Haskell%20CI/badge.svg)
 
 「結巴-hs」是「[結巴](https://github.com/fxsjy/jieba)」中文分詞的Haskell版本。
 
