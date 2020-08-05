@@ -28,6 +28,7 @@ executable jieba-hs
       Jieba.Dictionary
       Jieba.Dictionary.Types.PosTag
       Jieba.Dictionary.FreqDict
+      Jieba.Dictionary.TfIdfDict
       Jieba.Graph
   -- other-extensions:
   build-depends:
