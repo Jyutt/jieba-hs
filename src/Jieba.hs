@@ -29,5 +29,5 @@ cutAll dict snt = concatMap f idxs
     substr x y = take (y - x + 1) . drop x $ snt
     f ix = map (substr ix . vertex) (dag ! ix)
 
-tokenize :: Dict -> [String] -> [(String, POSTag)]
+tokenize :: Dict -> [String] -> [(String, PosTag)]
 tokenize dict xs = zip xs $ map (fromMaybe Untagged . termPOS dict) xs
