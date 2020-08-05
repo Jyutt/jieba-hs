@@ -28,3 +28,6 @@ main = do
 - [ ] Hidden Markov Model 的 cut 模式
 - [ ] TF-IDF 的字典
 - [ ] POS Tagging
+- [ ] 字典後備數據結構從Map換成Trie樹
+- [ ] 解析器例外處理/應不應該使用Parsec？
+
