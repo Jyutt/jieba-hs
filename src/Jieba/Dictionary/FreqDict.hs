@@ -2,12 +2,12 @@ module Jieba.Dictionary.FreqDict where
 
 import Jieba.Dictionary as D
 import Jieba.Dictionary.Types.PosTag
-import qualified Data.Map.Strict as Map
+-- import qualified Data.Map.Strict as Map
 
 type FreqDict = Dictionary Entry Metadata
 type Frequency = Integer -- Integer vs. Int?
 type LogFrequency = Double
-type DictEntryPair = (String, Entry)
+type DictEntryPair = EntryPair Entry
 
 data Entry = Entry { freq :: Frequency, pos :: PosTag } deriving (Show)
 data Metadata = Metadata
@@ -15,27 +15,21 @@ data Metadata = Metadata
   , logTotalFrequency :: LogFrequency
   } deriving (Show)
 
+words2entry :: [String] -> DictEntryPair
+words2entry xs = (term, Entry frequency posTag)
+  where
+    term = head xs
+    frequency = read (xs !! 1) :: Frequency
+    posTag = parsePOS (xs !! 2)
 
-entryPairsFromContents :: String -> [DictEntryPair]
-entryPairsFromContents input = map f $ lines input
-    where
-      f = words2entry . words
-      words2entry xs = (term, Entry frequency posTag)
-        where
-          term = head xs
-          frequency = read (xs !! 1) :: Frequency
-          posTag = parsePOS (xs !! 2)
-
-dictFromEntryPairs :: [DictEntryPair] -> FreqDict
-dictFromEntryPairs entryPairs = Dictionary dM md
-    where
-      dM = Map.fromList entryPairs
-      totalF = sum [ f | (_, Entry f _) <- entryPairs]
-      totalLF = (log . fromIntegral) totalF
-      md = Metadata totalF totalLF
+entries2meta :: [DictEntryPair] -> Metadata
+entries2meta entryPairs = Metadata totalF totalLF
+  where
+    totalF = sum $ map (freq . snd) entryPairs
+    totalLF = (log . fromIntegral) totalF
 
 dictFromContents :: String -> FreqDict
-dictFromContents = dictFromEntryPairs . entryPairsFromContents
+dictFromContents = dictInputParser words2entry entries2meta
 
 lookupFreq :: FreqDict -> String -> Maybe Frequency
 lookupFreq = D.lookupWith freq
