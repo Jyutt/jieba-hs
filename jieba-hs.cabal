@@ -30,6 +30,8 @@ executable jieba-hs
       Jieba.Dictionary.FreqDict
       Jieba.Dictionary.TfIdfDict
       Jieba.Graph
+      Jieba.Parsers.Dictionary
+      Jieba.Parsers.FreqDict
   -- other-extensions:
   build-depends:
     base >=4.12
