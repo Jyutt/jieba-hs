@@ -1,4 +1,4 @@
-module Jieba.Dictionary.Types.PosTag where
+module Jieba.Types.PosTag where
 
 -- POS Tags as defined by ICTCLAS
 data PosTag

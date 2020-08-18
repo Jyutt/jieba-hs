@@ -1,8 +1,7 @@
 module Jieba where
 
-import Jieba.Dictionary
 import Jieba.Graph
-import Jieba.Dictionary.Types.PosTag
+import Jieba.Types.PosTag
 import Jieba.Dictionary.FreqDict
 
 import Control.Monad (liftM2)

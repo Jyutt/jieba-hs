@@ -1,11 +1,12 @@
 module Jieba.Dictionary.FreqDict where
 
 import Jieba.Dictionary as D
-import Jieba.Dictionary.Types.PosTag
+import qualified Jieba.Types.Precisions as P
+import Jieba.Types.PosTag
 
 type FreqDict = Dictionary Entry Metadata
-type Frequency = Integer -- Integer vs. Int?
-type LogFrequency = Double
+type Frequency = P.Frequency
+type LogFrequency = P.LogFrequency
 type DictEntryPair = EntryPair Entry
 
 data Entry = Entry { freq :: Frequency, pos :: PosTag } deriving (Show)

@@ -1,7 +1,7 @@
 module Jieba.Parsers.FreqDict where
 
 import Jieba.Parsers.Dictionary (dictInputParser)
-import Jieba.Dictionary.Types.PosTag (parsePOS)
+import Jieba.Types.PosTag
 import qualified Jieba.Dictionary.FreqDict as FD
 
 words2entry :: [String] -> FD.DictEntryPair
