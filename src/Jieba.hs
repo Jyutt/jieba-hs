@@ -4,7 +4,7 @@ import Jieba.Graph
 import Jieba.Types.PosTag
 import Jieba.Dictionary.FreqDict
 
-import Control.Monad (liftM2)
+import Control.Applicative (liftA2)
 import Data.Array
 import Data.Maybe (fromMaybe)
 
@@ -19,7 +19,7 @@ cut mode = case mode of
 cutNoHMM :: FreqDict -> String -> [String]
 cutNoHMM dict snt = seg . followPath . path $ (dict, snt)
   where
-    path = uncurry $ liftM2 (.) optimalPath buildDAG
+    path = uncurry $ liftA2 (.) optimalPath buildDAG
     seg = segmentSentence snt
 
 cutAll :: FreqDict -> String -> [String]
