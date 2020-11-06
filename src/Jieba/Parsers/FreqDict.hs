@@ -9,7 +9,7 @@ words2entry xs = (term, FD.Entry frequency posTag)
   where
     term = head xs
     frequency = read (xs !! 1) :: FD.Frequency
-    posTag = parsePOS (xs !! 2)
+    posTag = parsePOSNamed (xs !! 2)
 
 entries2meta :: [FD.DictEntryPair] -> FD.Metadata
 entries2meta entryPairs = FD.Metadata totalF totalLF

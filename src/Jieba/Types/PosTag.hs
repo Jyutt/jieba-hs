@@ -12,6 +12,7 @@ data PosTagNamed
   | M | Q | R | P
   | C | U | XC | W
   | PER | LOC | ORG | TIME
+  | Untagged -- TODO: Deprecate, keeping to suppress GHC
   deriving (Eq, Ord, Enum, Bounded)
 
 data PosTag = Known PosTagNamed | Unknown String
@@ -51,3 +52,36 @@ instance Show PosTagNamed where
     LOC -> "LOC 地名"
     ORG -> "ORG 機構名"
     TIME -> "TIME 時間"
+    Untagged -> "Untagged" -- TODO: Deprecate
+
+parsePOSNamed :: String -> PosTagNamed
+parsePOSNamed posTag = case posTag of
+  "n" -> N
+  "f" -> F
+  "s" -> S
+  "t" -> T
+  "nr" -> NR
+  "ns" -> NS
+  "nt" -> NT
+  "nw" -> NW
+  "nz" -> NZ
+  "v"  -> V
+  "vd" -> VD
+  "vn" -> VN
+  "a"  -> A
+  "ad" -> AD
+  "an" -> AN
+  "d"  -> D
+  "m"  -> M
+  "q"  -> Q
+  "r"  -> R
+  "p"  -> P
+  "c"  -> C
+  "u"  -> U
+  "xc" -> XC
+  "w" -> W
+  "PER" -> PER
+  "LOC" -> LOC
+  "ORG" -> ORG
+  "TIME" -> TIME
+  _ -> undefined

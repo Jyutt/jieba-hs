@@ -31,5 +31,5 @@ cutAll dict snt = concatMap f idxs
     substr x y = take (y - x + 1) . drop x $ snt
     f ix = map (substr ix . vertex) (dag ! ix)
 
-tokenize :: FreqDict -> [String] -> [(String, PosTag)]
+tokenize :: FreqDict -> [String] -> [(String, PosTagNamed)]
 tokenize dict xs = zip xs $ map (fromMaybe Untagged . lookupPOS dict) xs

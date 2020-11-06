@@ -9,7 +9,7 @@ type Frequency = P.Frequency
 type LogFrequency = P.LogFrequency
 type DictEntryPair = EntryPair Entry
 
-data Entry = Entry { freq :: Frequency, pos :: PosTag } deriving (Show)
+data Entry = Entry { freq :: Frequency, pos :: PosTagNamed } deriving (Show)
 data Metadata = Metadata
   { totalFrequency :: Frequency
   , logTotalFrequency :: LogFrequency
@@ -18,5 +18,5 @@ data Metadata = Metadata
 lookupFreq :: FreqDict -> String -> Maybe Frequency
 lookupFreq = D.lookupWith freq
 
-lookupPOS :: FreqDict -> String -> Maybe PosTag
+lookupPOS :: FreqDict -> String -> Maybe PosTagNamed
 lookupPOS = D.lookupWith pos
