@@ -24,18 +24,16 @@ extra-source-files:  CHANGELOG.md, README.md
 library
   exposed-modules: Jieba
   other-modules:
-      Jieba.Dictionary
-      Jieba.Types.PosTag
-      Jieba.Types.Precisions
       Jieba.Dictionary.FreqDict
-      Jieba.Dictionary.TfIdfDict
+      Jieba.Types.PosTag
+      Jieba.Types.Units
       Jieba.Graph
-      Jieba.Parsers.Dictionary
-      Jieba.Parsers.FreqDict
+      Jieba.Parsec.FreqDict
   build-depends:
     base >=4.12
     , containers >=0.6.0.1
     , array >=0.5.3.0
+    , parsec >=3.1.13.0
   hs-source-dirs:  src
   default-language:    Haskell2010
 
@@ -43,18 +41,17 @@ executable jieba-hs
   main-is:             Main.hs
   other-modules:
       Jieba
-      Jieba.Dictionary
       Jieba.Types.PosTag
-      Jieba.Types.Precisions
+      Jieba.Types.Units
       Jieba.Dictionary.FreqDict
-      Jieba.Dictionary.TfIdfDict
+      Jieba.Parsec.FreqDict
       Jieba.Graph
-      Jieba.Parsers.Dictionary
-      Jieba.Parsers.FreqDict
   -- other-extensions:
   build-depends:
     base >=4.12
     , containers >=0.6.0.1
     , array >=0.5.3.0
+    , parsec >=3.1.13.0
+
   hs-source-dirs:      src
   default-language:    Haskell2010

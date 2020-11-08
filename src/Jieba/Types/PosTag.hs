@@ -4,7 +4,7 @@
 module Jieba.Types.PosTag where
 
 -- POS Tags as defined by ICTCLAS
-data PosTagNamed
+data PosTagKnown
   = N | F | S | T
   | NR | NS | NT | NW
   | NZ | V | VD | VN
@@ -12,17 +12,16 @@ data PosTagNamed
   | M | Q | R | P
   | C | U | XC | W
   | PER | LOC | ORG | TIME
-  | Untagged -- TODO: Deprecate, keeping to suppress GHC
   deriving (Eq, Ord, Enum, Bounded)
 
-data PosTag = Known PosTagNamed | Unknown String
+data PosTag = Known PosTagKnown | Unknown String
 
 instance Show PosTag where
   show posTag = case posTag of
     Known tag -> show tag
     Unknown str -> str ++ " 未知"
 
-instance Show PosTagNamed where
+instance Show PosTagKnown where
   show posTagNamed = case posTagNamed of
     N -> "n 普通名詞"
     F -> "f 方位名詞"
@@ -52,36 +51,34 @@ instance Show PosTagNamed where
     LOC -> "LOC 地名"
     ORG -> "ORG 機構名"
     TIME -> "TIME 時間"
-    Untagged -> "Untagged" -- TODO: Deprecate
 
-parsePOSNamed :: String -> PosTagNamed
-parsePOSNamed posTag = case posTag of
-  "n" -> N
-  "f" -> F
-  "s" -> S
-  "t" -> T
-  "nr" -> NR
-  "ns" -> NS
-  "nt" -> NT
-  "nw" -> NW
-  "nz" -> NZ
-  "v"  -> V
-  "vd" -> VD
-  "vn" -> VN
-  "a"  -> A
-  "ad" -> AD
-  "an" -> AN
-  "d"  -> D
-  "m"  -> M
-  "q"  -> Q
-  "r"  -> R
-  "p"  -> P
-  "c"  -> C
-  "u"  -> U
-  "xc" -> XC
-  "w" -> W
-  "PER" -> PER
-  "LOC" -> LOC
-  "ORG" -> ORG
-  "TIME" -> TIME
-  _ -> undefined
+posToString :: PosTagKnown-> String
+posToString pos = case pos of
+  N -> "n"
+  F -> "f"
+  S -> "s"
+  T -> "t"
+  NR -> "nr"
+  NS -> "ns"
+  NT -> "nt"
+  NW -> "nw"
+  NZ -> "nz"
+  V ->  "v"
+  VD -> "vd"
+  VN -> "vn"
+  A ->  "a"
+  AD -> "ad"
+  AN -> "an"
+  D ->  "d"
+  M ->  "m"
+  Q ->  "q"
+  R ->  "r"
+  P ->  "p"
+  C ->  "c"
+  U ->  "u"
+  XC -> "xc"
+  W ->  "w"
+  PER -> "PER"
+  LOC -> "LOC"
+  ORG -> "ORG"
+  TIME ->"TIME"

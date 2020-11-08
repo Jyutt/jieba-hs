@@ -1,22 +1,28 @@
 module Jieba.Dictionary.FreqDict where
 
-import Jieba.Dictionary as D
-import qualified Jieba.Types.Precisions as P
+-- import Jieba.Dictionary as D
 import Jieba.Types.PosTag
+import Jieba.Types.Units (Frequency, LogFrequency)
+import qualified Data.Map.Strict as Map
 
-type FreqDict = Dictionary Entry Metadata
-type Frequency = P.Frequency
-type LogFrequency = P.LogFrequency
-type DictEntryPair = EntryPair Entry
-
-data Entry = Entry { freq :: Frequency, pos :: PosTagNamed } deriving (Show)
+data FreqDict = FreqDict { dictMap :: Map.Map String Entry
+                         , metadata :: Metadata
+                         } deriving (Show)
+data Entry = Entry { freq :: Frequency, pos :: PosTag } deriving (Show)
 data Metadata = Metadata
   { totalFrequency :: Frequency
   , logTotalFrequency :: LogFrequency
   } deriving (Show)
 
-lookupFreq :: FreqDict -> String -> Maybe Frequency
-lookupFreq = D.lookupWith freq
+entriesToDict :: [(String, Entry)] -> FreqDict
+entriesToDict xs = FreqDict dm m
+  where dm = Map.fromList xs
+        tf = sum $ map (freq . snd) xs
+        logTf = (log . fromIntegral)  tf
+        m = Metadata tf logTf
 
-lookupPOS :: FreqDict -> String -> Maybe PosTagNamed
-lookupPOS = D.lookupWith pos
+lookupFreq :: FreqDict -> String -> Maybe Frequency
+lookupFreq d k = freq <$> Map.lookup k (dictMap d)
+
+lookupPOS :: FreqDict -> String -> Maybe PosTag
+lookupPOS d k = pos <$> Map.lookup k (dictMap d)

@@ -1,13 +1,13 @@
 module Jieba.Graph where
 
-import Jieba.Dictionary
+--import Jieba.Dictionary
 import Jieba.Dictionary.FreqDict as FD
+import Jieba.Types.Units (Weight)
 import Data.Array
 import Data.Maybe
 
 type Sentence = String
 type Vertex = Int
-type Weight = FD.LogFrequency
 type PathWeights = Array Vertex (Weight, Vertex)
 type AdjacencyList = [Edge]
 type SentenceDAG = Array Vertex AdjacencyList
