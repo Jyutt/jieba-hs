@@ -71,6 +71,3 @@ readHmmDict filePath = do
     Left e -> error $ "HMM weights not in the correct format, file: " ++ filePath
       ++ "\n Parser Error:\n" ++ show e
     Right hd -> hd
-  --return $ case res of
-  --  Left e -> error "HMM weights not in the correct format, file: " ++ filePath
-  --  Right hd -> hd

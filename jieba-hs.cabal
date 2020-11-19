@@ -27,8 +27,12 @@ library
       Jieba.Dictionary.FreqDict
       Jieba.Types.PosTag
       Jieba.Types.Units
+      Jieba.Types.HmmState
       Jieba.Graph
       Jieba.Parsec.FreqDict
+      Jieba.Parsec.HmmWeights
+      Jieba.FinalSeg
+      Jieba.Dictionary.HmmDict
   build-depends:
     base >=4.12
     , containers >=0.6.0.1
@@ -41,11 +45,15 @@ executable jieba-hs
   main-is:             Main.hs
   other-modules:
       Jieba
+      Jieba.Dictionary.FreqDict
       Jieba.Types.PosTag
       Jieba.Types.Units
-      Jieba.Dictionary.FreqDict
-      Jieba.Parsec.FreqDict
+      Jieba.Types.HmmState
       Jieba.Graph
+      Jieba.Parsec.FreqDict
+      Jieba.Parsec.HmmWeights
+      Jieba.FinalSeg
+      Jieba.Dictionary.HmmDict
   -- other-extensions:
   build-depends:
     base >=4.12
