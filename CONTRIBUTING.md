@@ -1,2 +1,2 @@
 # Contributing
-### 非常非常受歡迎。我還是Haskell的新手，求大家帶路，別取太多笑。哈哈 寫垃圾代碼者的日常擔心
+I am a complete Haskell novice, suggestions are very welcome and appreciated!
