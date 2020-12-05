@@ -3,7 +3,7 @@ module Jieba.Types.HmmState where
 import Jieba.Types.Units (Probability)
 import Data.Ix
 
-data HmmState = B | E | M | S deriving (Eq, Ord, Enum, Bounded)
+data HmmState = B | E | M | S deriving (Eq, Ord, Enum, Bounded, Show)
 -- Posterior and Prior respectively
 -- P(A|B) -> Transition A B
 data Transition = Transition HmmState HmmState
@@ -16,12 +16,12 @@ data StateProbRow = StateProbRow { b_prob :: Probability
                                  , s_prob :: Probability
                                  } deriving Show
 
-instance Show HmmState where
-  show s = case s of
-    B -> "Beginning"
-    E -> "End"
-    M -> "Middle"
-    S -> "Single"
+--instance Show HmmState where
+--  show s = case s of
+--    B -> "Beginning"
+--    E -> "End"
+--    M -> "Middle"
+--    S -> "Single"
 
 stateProb :: HmmState -> StateProbRow -> Probability
 stateProb hs = case hs of

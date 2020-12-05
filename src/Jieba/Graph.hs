@@ -26,8 +26,8 @@ buildDAG dict snt = sntDAG
 -- 2. 採用動態規劃查找最大概率路徑
 -- (Edge v 0) is for smoothing purposes in the case that no matches in dictionary
 -- were found.
-optimalPath :: FreqDict -> SentenceDAG -> PathWeights
-optimalPath dict sntDAG = costArray
+calcOptimalPath :: FreqDict -> SentenceDAG -> PathWeights
+calcOptimalPath dict sntDAG = costArray
   where
     (_, n) = bounds sntDAG
     normalize (f, v) = (f - (logTotalFrequency . metadata) dict, v)

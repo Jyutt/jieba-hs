@@ -4,6 +4,7 @@ module Jieba.Dictionary.FreqDict where
 import Jieba.Types.PosTag
 import Jieba.Types.Units (Frequency, LogFrequency)
 import qualified Data.Map.Strict as Map
+import Data.Maybe (isJust)
 
 data FreqDict = FreqDict { dictMap :: Map.Map String Entry
                          , metadata :: Metadata
@@ -20,6 +21,9 @@ entriesToDict xs = FreqDict dm m
         tf = sum $ map (freq . snd) xs
         logTf = (log . fromIntegral)  tf
         m = Metadata tf logTf
+
+entryExists :: FreqDict -> String -> Bool
+entryExists d k = isJust . Map.lookup k $ dictMap d
 
 lookupFreq :: FreqDict -> String -> Maybe Frequency
 lookupFreq d k = freq <$> Map.lookup k (dictMap d)

@@ -6,6 +6,7 @@ import Jieba.Types.HmmState as HS
 import Data.Array
 import Data.Maybe (fromMaybe)
 import Data.List (foldl', foldl1')
+import Control.Monad.State.Lazy
 
 -- TODO: Major ergonomics of the [B,E,M,S] transition arrays
 -- perhaps define a new type with an indexing operator
@@ -18,7 +19,21 @@ fm :: Maybe LogProbability -> LogProbability
 fm = fromMaybe minFloat
 
 viterbi :: HmmDict -> String -> [HmmState]
-viterbi hd str = backward . forward hd $ str
+viterbi hd = backward . forward hd
+
+segment :: String -> [HmmState] -> [String]
+segment str = fst' . foldl f ([], [], str)
+  where f (acc, c, x:[]) _ = (acc ++ [c ++ [x]], [], "")
+        f (acc, c, x:xs) s = case s of
+                               B -> (acc, c ++ [x], xs)
+                               M -> (acc, c ++ [x], xs)
+                               E -> (acc ++ [c ++ [x]], [], xs)
+                               S -> (acc ++ [c ++ [x]], [], xs)
+        fst' (a, _, _) = a
+
+finalseg :: HmmDict -> String -> [String]
+finalseg hd str = segment str states
+  where states = viterbi hd str
 
 forward :: HmmDict -> String -> [[(LogProbability, HmmState)]]
 forward hd (x:xs) = foldl' f [a] xs
