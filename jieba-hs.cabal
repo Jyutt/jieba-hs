@@ -40,6 +40,7 @@ library
     , array >=0.5.3.0
     , parsec >=3.1.13.0
     , mtl >= 2.2.2
+    , dlist >= 1.0
   hs-source-dirs:  src
   default-language:    Haskell2010
 
@@ -64,6 +65,7 @@ executable jieba-hs
     , array >=0.5.3.0
     , parsec >=3.1.13.0
     , mtl >= 2.2.2
+    , dlist >= 1.0
 
   hs-source-dirs:      src
   default-language:    Haskell2010
