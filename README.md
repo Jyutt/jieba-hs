@@ -1,6 +1,10 @@
 # jieba-hs
 ![Haskell CI](https://github.com/zyklotomic/jieba-hs/workflows/Haskell%20CI/badge.svg)
 
+TODO:
+  - Serious performance issues, see Main.hs for benchmarking program, do some profiling.
+  - Most likely due to personal ineptitude with lists and O(n^2) concat
+
 In Beta!
 
 「結巴-hs」是「[結巴](https://github.com/fxsjy/jieba)」中文分詞的Haskell版本。
