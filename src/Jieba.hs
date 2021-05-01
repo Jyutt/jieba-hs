@@ -1,12 +1,16 @@
 module Jieba where
 
-import Jieba.Graph
+import Jieba.Graph.PureGraph
 import Jieba.Types.PosTag
 import Jieba.Dictionary.FreqDict
 import Jieba.Dictionary.HmmDict
 import Jieba.Cut as Cut
 import Data.Array
 import Data.Maybe (fromMaybe)
+
+-- ST-based version
+cutNoHMM' :: FreqDict -> String -> [String]
+cutNoHMM' = Cut.cutNoHMM'
 
 cutNoHMM :: FreqDict -> String -> [String]
 cutNoHMM = Cut.cutNoHMM

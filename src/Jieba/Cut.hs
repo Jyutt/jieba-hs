@@ -1,12 +1,24 @@
 module Jieba.Cut where
 
-import qualified Jieba.Graph as G
+import qualified Jieba.Graph.PureGraph as G
+import qualified Jieba.Graph.STGraph as SG
 import Jieba.Types.PosTag
 import Jieba.Dictionary.FreqDict as FD
 import Jieba.Dictionary.HmmDict as HD
 import Data.Array ((!), bounds)
 import qualified Jieba.FinalSeg as FS
 import qualified Data.DList as DL
+import qualified Data.Text as T
+
+-- All the prime versions are supposedly the same as the
+-- non-prime versions, but with an ST-backed implementation
+cutNoHMM' :: FreqDict -> String -> [String]
+cutNoHMM' dict snt = map T.unpack . SG.segmentSentence snt' $ lens
+  where
+    snt' = T.pack snt
+    dag = SG.buildDAG dict snt'
+    weights = SG.calcDP dict dag
+    lens = SG.calcSegmentLengths weights
 
 cutNoHMM :: FreqDict -> String -> [String]
 cutNoHMM dict snt = seg . G.followPath . G.calcOptimalPath dict $ dag

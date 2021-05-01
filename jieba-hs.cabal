@@ -28,7 +28,8 @@ library
       Jieba.Types.PosTag
       Jieba.Types.Units
       Jieba.Types.HmmState
-      Jieba.Graph
+      Jieba.Graph.PureGraph
+      Jieba.Graph.STGraph
       Jieba.Parsec.FreqDict
       Jieba.Parsec.HmmWeights
       Jieba.FinalSeg
@@ -39,8 +40,10 @@ library
     , containers >=0.6.0.1
     , array >=0.5.3.0
     , parsec >=3.1.13.0
-    , mtl >= 2.2.2
-    , dlist >= 1.0
+    , mtl >=2.2.2
+    , dlist >=1.0
+    , vector >=0.12.2.0
+    , text >=1.2.4.1
   hs-source-dirs:  src
   default-language:    Haskell2010
 
@@ -52,7 +55,8 @@ executable jieba-hs
       Jieba.Types.PosTag
       Jieba.Types.Units
       Jieba.Types.HmmState
-      Jieba.Graph
+      Jieba.Graph.PureGraph
+      Jieba.Graph.STGraph
       Jieba.Parsec.FreqDict
       Jieba.Parsec.HmmWeights
       Jieba.FinalSeg
@@ -66,18 +70,21 @@ executable jieba-hs
     , parsec >=3.1.13.0
     , mtl >= 2.2.2
     , dlist >= 1.0
+    , vector >=0.12.2.0
+    , text >=1.2.4.1
   hs-source-dirs:      src
   default-language:    Haskell2010
 
 executable jieba-hs-tests
-  main-is:             Tests.hs
+  main-is:             Tests/Tests.hs
   other-modules:
       Jieba
       Jieba.Dictionary.FreqDict
       Jieba.Types.PosTag
       Jieba.Types.Units
       Jieba.Types.HmmState
-      Jieba.Graph
+      Jieba.Graph.PureGraph
+      Jieba.Graph.STGraph
       Jieba.Parsec.FreqDict
       Jieba.Parsec.HmmWeights
       Jieba.FinalSeg
@@ -92,5 +99,7 @@ executable jieba-hs-tests
     , dlist >= 1.0
     , QuickCheck >= 2.14.2
     , deepseq >= 1.4.4.0
+    , vector >=0.12.2.0
+    , text >=1.2.4.1
   hs-source-dirs:      src
   default-language:    Haskell2010

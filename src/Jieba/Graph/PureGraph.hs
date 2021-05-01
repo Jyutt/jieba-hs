@@ -1,4 +1,4 @@
-module Jieba.Graph where
+module Jieba.Graph.PureGraph where
 
 --import Jieba.Dictionary
 import Jieba.Dictionary.FreqDict as FD

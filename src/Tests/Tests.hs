@@ -25,11 +25,28 @@ cutNoHmmHalts s = cutNoHMM freqDict s `deepseq` True
 cutAllHalts :: String -> Bool
 cutAllHalts s = cutAll freqDict s `deepseq` True
 
+stEquivalentToPure :: String -> Bool
+stEquivalentToPure s = pureRes == stRes
+    where
+        pureRes = cutNoHMM freqDict s
+        stRes = cutNoHMM' freqDict s
+
 -- Run all the tests
 main :: IO ()
 main = do
+    pureGraphTests
+    quickCheck stEquivalentToPure
+
+pureGraphTests :: IO ()
+pureGraphTests = do
+    putStrLn "Performing PureGraph tests..."
     quickCheck (fileLoads freqDict)
     quickCheck (fileLoads hmmDict)
     quickCheck cutHmmHalts
     quickCheck cutNoHmmHalts
     quickCheck cutAllHalts
+
+stGraphEquivalenceTests :: IO ()
+stGraphEquivalenceTests = do
+    putStrLn "Testing ST Graph equivalence wrt. Pure Graph implementation"
+    quickCheck stEquivalentToPure
