@@ -60,7 +60,7 @@ calcDP fd dag = V.create $ do
 
         let optimalPath :: Edge
             optimalPath = maximumBy (comparing weight) . V.toList $ costs
-        
+
         VM.unsafeWrite dp i (normalize optimalPath)
     
     -- Trim the base case node, which does not actually correspond to

@@ -7,6 +7,8 @@ import System.IO.Unsafe (unsafePerformIO)
 import Test.QuickCheck
 import Control.DeepSeq (deepseq)
 
+import Test.QuickCheck.Jieba.Instances
+
 freqDict :: FreqDict
 freqDict = unsafePerformIO $ readFreqDict "data/dict.txt.small"
 
@@ -31,11 +33,18 @@ stEquivalentToPure s = pureRes == stRes
         pureRes = cutNoHMM freqDict s
         stRes = cutNoHMM' freqDict s
 
+stEquivalentToPure' :: [ZhChar] -> Bool
+stEquivalentToPure' s' = pureRes == stRes
+    where
+        s = toString s'
+        pureRes = cutNoHMM freqDict s
+        stRes = cutNoHMM' freqDict s
+
 -- Run all the tests
 main :: IO ()
 main = do
     pureGraphTests
-    quickCheck stEquivalentToPure
+    stGraphEquivalenceTests
 
 pureGraphTests :: IO ()
 pureGraphTests = do
@@ -50,3 +59,4 @@ stGraphEquivalenceTests :: IO ()
 stGraphEquivalenceTests = do
     putStrLn "Testing ST Graph equivalence wrt. Pure Graph implementation"
     quickCheck stEquivalentToPure
+    quickCheck stEquivalentToPure'
