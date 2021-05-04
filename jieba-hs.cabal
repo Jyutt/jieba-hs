@@ -22,7 +22,10 @@ build-type:          Simple
 extra-source-files:  CHANGELOG.md, README.md
 
 library
-  exposed-modules: Jieba
+  exposed-modules:
+      Jieba
+      Jieba.Parsec.FreqDict
+      Jieba.Parsec.HmmWeights
   other-modules:
       Jieba.Dictionary.FreqDict
       Jieba.Types.PosTag
@@ -30,8 +33,6 @@ library
       Jieba.Types.HmmState
       Jieba.Graph.PureGraph
       Jieba.Graph.STGraph
-      Jieba.Parsec.FreqDict
-      Jieba.Parsec.HmmWeights
       Jieba.FinalSeg
       Jieba.Dictionary.HmmDict
       Jieba.Cut
